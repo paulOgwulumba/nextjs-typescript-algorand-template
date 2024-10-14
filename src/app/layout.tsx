@@ -5,6 +5,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import RecoilContextProvider from '@/providers/recoil-provider';
+import { WalletConnectProvider } from '@/providers';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -49,7 +50,9 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster />
-        <RecoilContextProvider>{children}</RecoilContextProvider>
+        <RecoilContextProvider>
+          <WalletConnectProvider>{children}</WalletConnectProvider>
+        </RecoilContextProvider>
       </body>
     </html>
   );
