@@ -2,13 +2,13 @@
 
 import { AlgorandIcon } from '@/assets';
 import { ConnectWalletVisibleAtom } from '@/state';
-import { useWallet } from '@txnlab/use-wallet-react';
+import { useWallet } from '@txnlab/use-wallet';
 import styles from './index.module.scss';
 import { useSetRecoilState } from 'recoil';
 
 export const Home = () => {
   const setConnectWallet = useSetRecoilState(ConnectWalletVisibleAtom);
-  const { activeAddress, activeWallet } = useWallet();
+  const { activeAddress, providers } = useWallet();
 
   return (
     <div className={styles.container}>
@@ -26,8 +26,14 @@ export const Home = () => {
         <div className={styles['button-group']}>
           <button
             onClick={() => {
-              if (activeWallet) {
-                activeWallet?.disconnect();
+              if (activeAddress) {
+                for (const provider of providers || []) {
+                  try {
+                    provider.disconnect();
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }
               } else {
                 setConnectWallet(true);
               }
